@@ -1,0 +1,332 @@
+pict@pict-OptiPlex-3020:~$ mysql -h 10.10.8.119 -u te31448 -p
+Enter password: 
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 284
+Server version: 10.4.19-MariaDB MariaDB Server
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use te31448_db
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [te31448_db]> CREATE TABLE TEACHER(id INT PRIMARY KEY,name VARCHAR(20),salary INT);
+Query OK, 0 rows affected (0.258 sec)
+
+MariaDB [te31448_db]> Insert into TEACHER(id,name,salary) values
+    -> (1,"Mayuri",57000),
+    -> (2,"Sakshi",60000),
+    -> (3,"Amit",55000),
+    -> (4,"Sai",80000);
+Query OK, 4 rows affected (0.032 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [te31448_db]> CREATE TABLE COURSE(c_id INT PRIMARY KEY,id FOREIGN KEY, c_name VARCHAR(20);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FOREIGN KEY, c_name VARCHAR(20)' at line 1
+MariaDB [te31448_db]> CREATE TABLE COURSE(c_id INT PRIMARY KEY, c_name VARCHAR(20, id INT, FOREIGN KEY(id) REFERENCES TEACHER(id) );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' id INT, FOREIGN KEY(id) REFERENCES TEACHER(id) )' at line 1
+MariaDB [te31448_db]> CREATE TABLE COURSE(c_id INT PRIMARY KEY, c_name VARCHAR(20), id INT, FOREIGN KEY(id) REFERENCES TEACHER(id) );
+Query OK, 0 rows affected (0.179 sec)
+
+MariaDB [te31448_db]> insert into COURSE(c_id,id,c_name) values
+    -> (101,1,"Maths"),
+    -> (102,4,"Science"),
+    -> (103,2,"Physics"),
+    -> (104,4,"Bio"),
+    -> (106,3,"History");
+Query OK, 5 rows affected (0.064 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [te31448_db]> SELECT t.name,c.c_name FROM TEACHER t INNER JOIN COURSE c ON TEACHER.id = COURSE.id;
+ERROR 1054 (42S22): Unknown column 'TEACHER.id' in 'on clause'
+MariaDB [te31448_db]> SELECT t.name,c.c_name FROM TEACHER t INNER JOIN COURSE c ON t.id = c.id;
++--------+---------+
+| name   | c_name  |
++--------+---------+
+| Mayuri | Maths   |
+| Sai    | Science |
+| Sakshi | Physics |
+| Sai    | Bio     |
+| Amit   | History |
++--------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> select * from TEACHER natural join COURSE;
++----+--------+--------+------+---------+
+| id | name   | salary | c_id | c_name  |
++----+--------+--------+------+---------+
+|  1 | Mayuri |  57000 |  101 | Maths   |
+|  4 | Sai    |  80000 |  102 | Science |
+|  2 | Sakshi |  60000 |  103 | Physics |
+|  4 | Sai    |  80000 |  104 | Bio     |
+|  3 | Amit   |  55000 |  106 | History |
++----+--------+--------+------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> Insert into TEACHER(id,name,salary) values;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 1
+MariaDB [te31448_db]> Insert into TEACHER(id,name,salary) values
+    -> (106,"Saksham",55000),
+    -> (107,"Sayali",60000);
+Query OK, 2 rows affected (0.027 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [te31448_db]> select t.name,t.salary from TEACHER t LEFT JOIN COURSE c ON t.id=c.id;
++---------+--------+
+| name    | salary |
++---------+--------+
+| Mayuri  |  57000 |
+| Sakshi  |  60000 |
+| Amit    |  55000 |
+| Sai     |  80000 |
+| Sai     |  80000 |
+| Saksham |  55000 |
+| Sayali  |  60000 |
++---------+--------+
+7 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> select t.name,t.salary,c.c_name from TEACHER t LEFT JOIN COURSE c ON t.id=c.id;
++---------+--------+---------+
+| name    | salary | c_name  |
++---------+--------+---------+
+| Mayuri  |  57000 | Maths   |
+| Sai     |  80000 | Science |
+| Sakshi  |  60000 | Physics |
+| Sai     |  80000 | Bio     |
+| Amit    |  55000 | History |
+| Saksham |  55000 | NULL    |
+| Sayali  |  60000 | NULL    |
++---------+--------+---------+
+7 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> insert into COURSE(c_id,id,c_name) values
+    -> (6,,"Geo");
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '"Geo")' at line 2
+MariaDB [te31448_db]> insert into COURSE(c_id,id,c_name) values (6,NULL,"Geo");
+Query OK, 1 row affected (0.025 sec)
+
+MariaDB [te31448_db]> insert into COURSE(c_id,id,c_name) values (7,NULL,"Civics");
+Query OK, 1 row affected (0.164 sec)
+
+MariaDB [te31448_db]> SELECT t.name,c.c_name from TEACHER t RIGHT JOIN COURSE c ON t.id=c.id;
++--------+---------+
+| name   | c_name  |
++--------+---------+
+| NULL   | Geo     |
+| NULL   | Civics  |
+| Mayuri | Maths   |
+| Sai    | Science |
+| Sakshi | Physics |
+| Sai    | Bio     |
+| Amit   | History |
++--------+---------+
+7 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> select t.name as teacher_id, c.c_name as c_name from TEACHER t LEFT JOIN c ON t.id = c.id UNION select t.name, c.c_name as c_name from TEACHER t RIGHT JOIN COURSE c ON t.id=c.id;
+ERROR 1146 (42S02): Table 'te31448_db.c' doesn't exist
+MariaDB [te31448_db]> select t.name as teacher_id, c.c_name as c_name from TEACHER t LEFT JOIN COURSE c ON t.id = c.id UNION select t.name, c.c_name as c_name from TEACHER t RIGHT JOIN COURSE c ON t.id=c.id;
++------------+---------+
+| teacher_id | c_name  |
++------------+---------+
+| Mayuri     | Maths   |
+| Sakshi     | Physics |
+| Amit       | History |
+| Sai        | Science |
+| Sai        | Bio     |
+| Saksham    | NULL    |
+| Sayali     | NULL    |
+| NULL       | Geo     |
+| NULL       | Civics  |
++------------+---------+
+9 rows in set (0.002 sec)
+
+MariaDB [te31448_db]> SELECT t.name, c.c_name from TEACHER t NATURAL JOIN COURSE c;
++--------+---------+
+| name   | c_name  |
++--------+---------+
+| Mayuri | Maths   |
+| Sai    | Science |
+| Sakshi | Physics |
+| Sai    | Bio     |
+| Amit   | History |
++--------+---------+
+5 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> create table directory(id INT PRIMARY, name VARCHAR(20),p_id INT);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' name VARCHAR(20),p_id INT)' at line 1
+MariaDB [te31448_db]> create table directory(id INT PRIMARY KEY, name VARCHAR(20),p_id INT);
+Query OK, 0 rows affected (0.168 sec)
+
+MariaDB [te31448_db]> insert into directory(id,name,p_id) values
+    -> (1,"root",NULL),
+    -> (2,"documents",1),
+    -> (3,"download",1),
+    -> (4,"PPT",3),
+    -> (65,"resume",2);
+Query OK, 5 rows affected (0.028 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [te31448_db]> select p.name as Parent, c.name as Child FROM directory p JOIN directory c where p.id = c.id;
++-----------+-----------+
+| Parent    | Child     |
++-----------+-----------+
+| root      | root      |
+| documents | documents |
+| download  | download  |
+| PPT       | PPT       |
+| resume    | resume    |
++-----------+-----------+
+5 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> select p.name as Parent, c.name as Child FROM directory p JOIN directory c on p.id = c.id;
++-----------+-----------+
+| Parent    | Child     |
++-----------+-----------+
+| root      | root      |
+| documents | documents |
+| download  | download  |
+| PPT       | PPT       |
+| resume    | resume    |
++-----------+-----------+
+5 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT p.name AS Parent, c.name AS Child
+    -> FROM directory c
+    -> JOIN directory p ON p.id = c.p_id;
++-----------+-----------+
+| Parent    | Child     |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> insert into directory(id,name,p_id) values
+    -> (5,"Samyukta",NULL);
+Query OK, 1 row affected (0.037 sec)
+
+MariaDB [te31448_db]> SELECT p.name AS Parent, c.name AS Child FROM directory c JOIN directory p ON p.id = c.p_id;
++-----------+-----------+
+| Parent    | Child     |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> select * from directory;
++----+-----------+------+
+| id | name      | p_id |
++----+-----------+------+
+|  1 | root      | NULL |
+|  2 | documents |    1 |
+|  3 | download  |    1 |
+|  4 | PPT       |    3 |
+|  5 | Samyukta  | NULL |
+| 65 | resume    |    2 |
++----+-----------+------+
+6 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory c JOIN directory p on p.id = c.id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | root      |
+| documents | documents |
+| download  | download  |
+| PPT       | PPT       |
+| Samyukta  | Samyukta  |
+| resume    | resume    |
++-----------+-----------+
+6 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory c JOIN directory p on c.id = p.id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | root      |
+| documents | documents |
+| download  | download  |
+| PPT       | PPT       |
+| Samyukta  | Samyukta  |
+| resume    | resume    |
++-----------+-----------+
+6 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory p JOIN directory c on c.id = p.id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | root      |
+| documents | documents |
+| download  | download  |
+| PPT       | PPT       |
+| Samyukta  | Samyukta  |
+| resume    | resume    |
++-----------+-----------+
+6 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> selectr p.name as Parent, c.name as Child FROM directory c JOIN directory p on p.id = c.p_id;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'selectr p.name as Parent, c.name as Child FROM directory c JOIN directory p o...' at line 1
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory p JOIN directory c on c.id = p.p_id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory c JOIN directory p on c.id = p.p_id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory c JOIN directory p on p.p_id = c.id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT c.name as Child, p.name as Parent FROM directory c JOIN directory p on p.p_id = c.id; 
++-----------+-----------+
+| Child     | Parent    |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
+MariaDB [te31448_db]> SELECT p.name AS Parent, c.name AS Child FROM directory c JOIN directory p ON p.id = c.p_id;
++-----------+-----------+
+| Parent    | Child     |
++-----------+-----------+
+| root      | documents |
+| root      | download  |
+| download  | PPT       |
+| documents | resume    |
++-----------+-----------+
+4 rows in set (0.001 sec)
+
