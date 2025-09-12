@@ -1,8 +1,0 @@
-MDT
-1	LDA (P,1) 
-2	ADD (P,2) 
-3	MEND
-4	MOV R1,&X 
-5	MOV R2,&Y 
-6	MOV R3,&Z 
-7	MEND
