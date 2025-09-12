@@ -1,3 +1,0 @@
-PNTAB (Macro → Parameters)
-INCR : A B 
-PRINT : X Y Z 
