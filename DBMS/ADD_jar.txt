@@ -1,0 +1,7 @@
+1) right click on the project 
+2) click on build path
+3) configure file
+4) libraries
+5) add jar fil
+6) choose file
+7) save
