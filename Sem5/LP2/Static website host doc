@@ -1,0 +1,57 @@
+1. Start the Creation Process
+
+    Log in to the Azure Portal.
+
+    In the search bar at the top, type "Storage accounts" and select it.
+
+    Click the + Create button.
+
+2. Fill in the "Basics" Tab (Critical)
+
+This is where most students get stuck due to region or naming rules.
+
+    Subscription: Ensure "Azure for Students" is selected.
+
+    Resource Group: Select the one you created earlier (or click "Create new").
+
+    Storage account name: This must be unique across all of Azure, 3–24 characters, and lowercase letters/numbers only (no spaces or underscores).
+
+        Example: mystudentwebsite2026
+
+    Region: CRITICAL. Select one of the regions you found in your "Allowed Locations" list from the previous step. If you pick a random one like "East US" and it’s not allowed, the deployment will fail.
+
+    Performance: Choose Standard (Recommended for students).
+
+    Redundancy: Select Locally-redundant storage (LRS). This is the cheapest option and keeps your data in a single data center.
+
+3. Review and Create
+
+    You can skip the "Advanced," "Networking," and "Tags" tabs for a simple static site—the defaults are fine.
+
+    Click Review + Create.
+
+    Azure will run a "Validation." If it says "Validation Failed," click the red error message; it’s usually because the Region you picked isn't allowed by your student policy.
+
+    If it says "Validation Passed," click Create.
+
+4. Enable the "Static Website" Feature
+
+Once the resource is created and says "Deployment is complete":
+
+    Click Go to resource.
+
+    On the left-hand menu, scroll down to the Data management section and click Static website.
+
+    Set the toggle to Enabled.
+
+    In the Index document name box, type index.html.
+
+    Click Save.
+
+5. Upload your files
+
+    After saving, a link to a container named $web will appear. Click it.
+
+    Click Upload and select your website files (HTML, CSS, JS) from your computer.
+
+    Go back to the Static website tab. Your live site URL will be listed under Primary endpoint.
