@@ -1,0 +1,190 @@
+ssh hadoop@10.10.15.238
+hadoop@10.10.15.238's password: 
+Last login: Fri Apr 10 10:21:02 2026 from 10.10.11.73
+[hadoop@dbsl-10 ~]$ ls
+ 31104_hadoop
+ 31107
+ 31108
+ 31111
+ 31119
+ 31145
+ 31149
+ 31163
+ 31165
+ 31166
+ 31173
+ 31176
+ 31186
+ 31206
+ 31217
+ 31245
+ 31246
+ 31249
+ 31250
+ 31252_hadoop
+ 31257
+ 31258
+ 31259
+ 31260
+ 31261
+ 31448_hadoop
+ 31450
+ 31453
+ 31459
+ 50_311
+ apps
+ assignment11
+ Assignment11
+[hadoop@dbsl-10 ~]$ cd $HADOOP_HOME/sbin
+[hadoop@dbsl-10 sbin]$ ls
+31102  31162  31209                31446                    Sanskruti
+31106  31163  31210                31446_12                 start-all.cmd
+31109  31164  31211                31446_B12                start-all.sh
+31110  31167  31211_12             31448                    start-balancer.sh
+31111  31168  31211_assign12       31449                    start-dfs.cmd
+31112  31169  31212                31449_12                 start-dfs.sh
+31113  31170  31213                31450                    start-secure-dns.sh
+31114  31171  31214                31451                    start-yarn.cmd
+31115  31172  31217                31452                    start-yarn.sh
+31116  31173  31218                31452_1                  stop-all.cmd
+31118  31174  31219                31455_12                 stop-all.sh
+31119  31175  31220                31456                    stop-balancer.sh
+31121  31176  31221                31457                    stop-dfs.cmd
+31122  31177  31222                31459                    stop-dfs.sh
+31145  31178  31245                50_311                   stop-secure-dns.sh
+31146  31180  31246                data.txt                 stop-yarn.cmd
+31147  31182  31247                distribute-exclude.sh    stop-yarn.sh
+31148  31183  31248                FederationStateStore     WordCount.java
+31149  31184  31251                hadoop                   workers.sh
+31151  31186  31252                hadoop-3.4.3.tar.gz      yarn-daemon.sh
+31152  31187  31254                hadoop-daemon.sh         yarn-daemons.sh
+31154  31188  31263                hadoop-daemons.sh        yug_31458
+31156  31201  31441                httpfs.sh
+31158  31205  31441_assignment_12  kms.sh
+31159  31207  31442                mr-jobhistory-daemon.sh
+31160  31208  31443                refresh-namenodes.sh
+[hadoop@dbsl-10 sbin]$ mkdir 31448_12
+[hadoop@dbsl-10 sbin]$ cd 31448_12
+[hadoop@dbsl-10 31448_12]$ ls
+[hadoop@dbsl-10 31448_12]$ nano input.txt
+[hadoop@dbsl-10 31448_12]$ nano WeatherDataAverage.java
+[hadoop@dbsl-10 31448_12]$ javac -classpath `hadoop classpath` WeatherDataAverage.java
+[hadoop@dbsl-10 31448_12]$ jar cf WeatherDataAverage.jar WeatherDataAverage*.class
+[hadoop@dbsl-10 31448_12]$ start-dfs.sh
+Starting namenodes on [localhost]
+localhost: namenode is running as process 31645.  Stop it first and ensure /tmp/hadoop-hadoop-namenode.pid file is empty before retry.
+Starting datanodes
+localhost: datanode is running as process 31818.  Stop it first and ensure /tmp/hadoop-hadoop-datanode.pid file is empty before retry.
+Starting secondary namenodes [dbsl-10]
+2026-04-10 10:26:29,891 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[hadoop@dbsl-10 31448_12]$ start-dfs.sh
+Starting namenodes on [localhost]
+localhost: namenode is running as process 31645.  Stop it first and ensure /tmp/hadoop-hadoop-namenode.pid file is empty before retry.
+Starting datanodes
+localhost: datanode is running as process 31818.  Stop it first and ensure /tmp/hadoop-hadoop-datanode.pid file is empty before retry.
+Starting secondary namenodes [dbsl-10]
+2026-04-10 10:26:46,765 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+[hadoop@dbsl-10 31448_12]$ jps
+39315 MainGenericRunner
+8212 NodeManager
+6117 SecondaryNameNode
+31818 DataNode
+31645 NameNode
+53071 Jps
+8079 ResourceManager
+[hadoop@dbsl-10 31448_12]$ hdfs mkdir hdfs://localhost:9000/31448_12
+[hadoop@dbsl-10 31448_12]$ hdfs mkdir hdfs://localhost:9000/31448_12/input
+[hadoop@dbsl-10 31448_12]$ hdfs put input.txt hdfs://localhost:9000/31446_12/input
+create /31446_12/input: file does not exist
+[hadoop@dbsl-10 31448_12]$ hdfs put input.txt hdfs://localhost:9000/31448_12/input
+[hadoop@dbsl-10 31448_12]$ hadoop jar WeatherDataAverage.jar WeatherDataAverage /31448_12/input /31448_12/output
+2026-04-10 10:28:48,471 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+2026-04-10 10:28:48,990 INFO client.DefaultNoHARMFailoverProxyProvider: Connecting to ResourceManager at localhost/127.0.0.1:8032
+2026-04-10 10:28:49,242 WARN mapreduce.JobResourceUploader: Hadoop command-line option parsing not performed. Implement the Tool interface and execute your application with ToolRunner to remedy this.
+2026-04-10 10:28:49,341 INFO mapreduce.JobResourceUploader: Disabling Erasure Coding for path: /tmp/hadoop-yarn/staging/hadoop/.staging/job_1775793239430_0027
+2026-04-10 10:28:49,752 INFO input.FileInputFormat: Total input files to process : 1
+2026-04-10 10:28:50,082 INFO mapreduce.JobSubmitter: number of splits:1
+2026-04-10 10:28:50,373 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1775793239430_0027
+2026-04-10 10:28:50,373 INFO mapreduce.JobSubmitter: Executing with tokens: []
+2026-04-10 10:28:50,504 INFO conf.Configuration: resource-types.xml not found
+2026-04-10 10:28:50,504 INFO resource.ResourceUtils: Unable to find 'resource-types.xml'.
+2026-04-10 10:28:50,546 INFO impl.YarnClientImpl: Submitted application application_1775793239430_0027
+2026-04-10 10:28:50,571 INFO mapreduce.Job: The url to track the job: http://dbsl-10:8088/proxy/application_1775793239430_0027/
+2026-04-10 10:28:50,572 INFO mapreduce.Job: Running job: job_1775793239430_0027
+2026-04-10 10:28:56,778 INFO mapreduce.Job: Job job_1775793239430_0027 running in uber mode : false
+2026-04-10 10:28:56,796 INFO mapreduce.Job:  map 0% reduce 0%
+2026-04-10 10:29:03,916 INFO mapreduce.Job:  map 100% reduce 0%
+2026-04-10 10:29:11,975 INFO mapreduce.Job:  map 100% reduce 100%
+2026-04-10 10:29:14,019 INFO mapreduce.Job: Job job_1775793239430_0027 completed successfully
+2026-04-10 10:29:14,165 INFO mapreduce.Job: Counters: 54
+	File System Counters
+		FILE: Number of bytes read=4710
+		FILE: Number of bytes written=630689
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=1881
+		HDFS: Number of bytes written=60
+		HDFS: Number of read operations=8
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=2
+		HDFS: Number of bytes read erasure-coded=0
+	Job Counters 
+		Launched map tasks=1
+		Launched reduce tasks=1
+		Data-local map tasks=1
+		Total time spent by all maps in occupied slots (ms)=4591
+		Total time spent by all reduces in occupied slots (ms)=6132
+		Total time spent by all map tasks (ms)=4591
+		Total time spent by all reduce tasks (ms)=6132
+		Total vcore-milliseconds taken by all map tasks=4591
+		Total vcore-milliseconds taken by all reduce tasks=6132
+		Total megabyte-milliseconds taken by all map tasks=4701184
+		Total megabyte-milliseconds taken by all reduce tasks=6279168
+	Map-Reduce Framework
+		Map input records=96
+		Map output records=288
+		Map output bytes=4128
+		Map output materialized bytes=4710
+		Input split bytes=111
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=3
+		Reduce shuffle bytes=4710
+		Reduce input records=288
+		Reduce output records=3
+		Spilled Records=576
+		Shuffled Maps =1
+		Failed Shuffles=0
+		Merged Map outputs=1
+		GC time elapsed (ms)=44
+		CPU time spent (ms)=1470
+		Physical memory (bytes) snapshot=484425728
+		Virtual memory (bytes) snapshot=5500968960
+		Total committed heap usage (bytes)=264241152
+		Peak Map Physical memory (bytes)=293093376
+		Peak Map Virtual memory (bytes)=2747793408
+		Peak Reduce Physical memory (bytes)=191332352
+		Peak Reduce Virtual memory (bytes)=2753175552
+	Shuffle Errors
+		BAD_ID=0
+		CONNECTION=0
+		IO_ERROR=0
+		WRONG_LENGTH=0
+		WRONG_MAP=0
+		WRONG_REDUCE=0
+	File Input Format Counters 
+		Bytes Read=1770
+	File Output Format Counters 
+		Bytes Written=60
+[hadoop@dbsl-10 31448_12]$ ^C
+[hadoop@dbsl-10 31448_12]$ hdfs ls hdfs://localhost:9000/31448_12/output
+_SUCCESS
+part-r-00000
+[hadoop@dbsl-10 31448_12]$ hdfs cat hdfs://localhost:9000/31448_12/output/part-r-00000
+DewPoint	59.99005
+Temperature	53.58261
+WindSpeed	1009.55023
+[hadoop@dbsl-10 31448_12]$ Connection to 10.10.15.238 closed by remote host.
+Connection to 10.10.15.238 closed.
+
